@@ -33,6 +33,9 @@ function addLeadingZero(value) {
   return value.toString().padStart(2, '0');
 }
 
+startButton.disabled = true;
+datetimePicker.disabled = false;
+
 // Функція для оновлення інтерфейсу таймера
 function updateTimer(endTime) {
   const timeInterval = setInterval(function () {
@@ -41,6 +44,7 @@ function updateTimer(endTime) {
 
     if (remainingTime <= 0) {
       clearInterval(timeInterval);
+      datetimePicker.disabled = false;
       startButton.disabled = true;
       iziToast.success({
         title: 'Time is up!',
@@ -63,27 +67,30 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    console.log(selectedDates[0]);
+    const selectedDate = selectedDates[0];
+
+    if (selectedDate < new Date()) {
+      iziToast.error({
+        title: 'Please choose a date in the future',
+        position: 'topRight',
+      });
+    } else {
+      startButton.disabled = false;
+      datetimePicker.disabled = true;
+    }
   },
 };
+
 const flatpickrInstance = flatpickr(datetimePicker, options);
 
 startButton.addEventListener('click', function () {
-  flatpickrInstance.close();
   const selectedDate = flatpickrInstance.selectedDates[0];
 
   if (selectedDate) {
     startButton.disabled = true;
+    datetimePicker.disabled = true;
     updateTimer(selectedDate.getTime());
-  }
-  if (selectedDate < new Date()) {
-    iziToast.error({
-      title: 'Please choose a date in the future',
-      position: 'topRight',
-    });
-    startButton.disabled = true;
   } else {
     startButton.disabled = false;
-    updateTimer(selectedDate.getTime());
   }
 });

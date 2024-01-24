@@ -5,6 +5,7 @@ const body = document.querySelector('body');
 start.addEventListener('click', changeColorHandler);
 stop.addEventListener('click', stopChangeColorHandler);
 let colorId = null;
+stop.disabled = true;
 function changeColorHandler() {
   stop.disabled = false;
   colorId = setInterval(() => {
