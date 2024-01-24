@@ -14,8 +14,8 @@ function createPromise(position, delay) {
     }, delay);
   });
 }
-
-document.querySelector('.form').addEventListener('submit', function (event) {
+const form = document.querySelector('.form');
+form.addEventListener('submit', function (event) {
   event.preventDefault();
 
   const firstDelay = parseInt(
@@ -42,4 +42,5 @@ document.querySelector('.form').addEventListener('submit', function (event) {
         });
       });
   }
+  form.reset();
 });
